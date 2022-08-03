@@ -1,6 +1,6 @@
 {
   "name": "chart-types",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "音札譜面フォーマット",
   "types": "./chart.d.ts",
   "author": "mtsgi",
