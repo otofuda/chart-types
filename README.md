@@ -15,8 +15,10 @@
 |3|左フリック|optionキー使用|
 |4|右フリック|optionキー使用|
 |5|音札ノート|全難易度で共通位置|
+|90|ダミー|optionキー使用|
+|91|特殊オブジェクト|optionキー使用|
 |92|停止||
-|93|瞬間移動||
+|93|瞬間移動|optionキーで拍数を指定|
 |94|テクスチャ|optionキー使用|
 |95|区切り線|optionキーで幅を指定|
 |96|LED制御||
@@ -75,10 +77,44 @@ option: [width: Float, offsetNumer: Integer, offsetDenom: Integer]
 - 注：ノートは中心を基点として `width` レーン分の横幅を持ちます。`-1` の時は通常の幅(3レーン分)になります
 - 注：ノートは `offsetNumer/offsetDenom` レーン分、オフセットとして右側に移動します
 
+#### type: 90（ダミー）
+
+|添字|オプション名|型|必須|説明|
+|---|---|---|---|---|
+|0|type|String|Yes|擬態する音符の種類|
+
+- 添字 `0` に擬態対象の音符種類(typeキーに指定するもの)を指定します
+- 添字 `1` 以降には、擬態対象のtypeで必要になる `option` の添字＋1の位置に指定します
+- `type: 1, 2, 3, 4, 5` に対応しています
+
+#### type: 91（特殊オブジェクト）
+
+```
+option: [objectType: String, objectName: String, option: String]
+```
+
+|添字|オプション名|型|必須|説明|
+|---|---|---|---|---|
+|0|objectType|String|Yes|表示するオブジェクトの種類|
+|1|objectName|String|No|objectTypeのうち、表示するオブジェクトの名前(指定する必要がある場合のみ)|
+|2|option|String|No|その他フラグ(指定する必要がある場合のみ)|
+
+#### type: 93（瞬間移動）
+
+```
+option: [beat: Integer]
+```
+
+|添字|オプション名|型|必須|説明|
+|---|---|---|---|---|
+|0|beat|Integer|Yes|瞬間移動する拍数|
+
+- 注：この小節が `beatChange/4` 拍ぶんの長さになり、先頭から末尾まで瞬間移動します
+
 #### type: 94（テクスチャ）
 
 ```
-option: [source; String, width: Float, height: Float, offsetNumer: Integer, offsetDenom: Integer]
+option: [source: String, width: Float, height: Float, offsetNumer: Integer, offsetDenom: Integer]
 ```
 
 |添字|オプション名|型|必須|説明|
@@ -89,8 +125,8 @@ option: [source; String, width: Float, height: Float, offsetNumer: Integer, offs
 |3|offsetNumer|Integer|No|右側へのオフセット分数の分子|
 |4|offsetDenom|Integer|No|右側へのオフセット分数の分母|
 
-- 注：ノートは中心を基点として`width`レーン分の横幅を持ちます(小数を使用可能)。`-1`で通常の幅(3レーン分)になります
-- 注：ノートは`offsetNumer/offsetDenom`レーン分オフセットとして右に移動します(両方の値は正の整数)
+- 注：ノートは中心を基点として `width` レーン分の横幅を持ちます(小数を使用可能)。 `-1` で通常の幅(3レーン分)になります
+- 注：ノートは `offsetNumer/offsetDenom` レーン分オフセットとして右に移動します(両方の値は正の整数)
 
 #### type: 95（区切り線）
 
@@ -102,9 +138,9 @@ option: [length: Integer]
 |---|---|---|---|---|
 |0|length|Integer|Yes|左面を基点とした横幅(単位：1レーンの幅)|
 
-- 注：ノートは`lane`を起点として右側に`length`レーン分の長さを持ちます（値は-1または、1～5）
-- 言い換えると、`lane`番レーンの左端から`lane+length-1`番レーンのの右端まで区切り線が描画されます
-- 小節線非表示制御のときは`-1`を指定します
+- 注：ノートは `lane` を起点として右側に `length` レーン分の長さを持ちます（値は-1または、1～5）
+- 言い換えると、 `lane` 番レーンの左端から `lane + length - 1` 番レーンのの右端まで区切り線が描画されます
+- 小節線非表示制御のときは `-1` を指定します
 
 #### type: 97（拍子変化）
 
@@ -114,9 +150,9 @@ option: [beat: Integer]
 
 |添字|オプション名|型|必須|説明|
 |---|---|---|---|---|
-|0|beat|Integer|Yes|変化後の[n/4拍子]の分子の値|
+|0|beat|Integer|Yes|変化後の **n/4拍子** の分子の値|
 
-- 注：このノートの後、`beatChange/4`拍子になります
+- 注：このノートの後、 `beatChange/4` 拍子になります
 
 
 #### type: 98（BPM変化）
